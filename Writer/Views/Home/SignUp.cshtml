@@ -1,0 +1,198 @@
+﻿@model Writer.ViewModels.UserRegisterModel
+
+@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Sign up</legend>
+
+        <div class="row-fluid">
+            <div class="span5">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.FirstName)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SurName)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.SurName)
+                    @Html.ValidationMessageFor(model => model.SurName)
+                </div>
+
+                                <div class="editor-label">
+                    @Html.LabelFor(model => model.Description)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Country)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Country)
+                    @Html.ValidationMessageFor(model => model.Country)
+                </div>
+            </div>
+
+            <div class="span7">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+
+                <p>
+                    <input type="submit" value="Create" class="btn btn-success" />
+                </p>
+            </div>
+
+        </div>
+
+    </fieldset>
+}
+
+@section RightColumn
+{
+    <div class="row-fluid">
+        <div class="span12 alert alert-info">
+            <b>Why Register?</b>
+            <ul style="list-style-type: square;">
+                <li>One of a kind community for writers!</li>
+                <li>Your very own portfolio - <b>ONLINE!</b></li>
+                <li>Share, explore and develop yourself!</li>
+                <li>Free now, free tomorrow!</li>
+                <li><b>All the cool kids are doing it!</b></li>
+            </ul>
+        </div>
+
+
+    </div>
+}
+
+@section LeftColumn
+{
+    <div class="row-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <img src="" style="display: none;" class="img-polaroid gravatarimage">
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="FnamePreview" class="small-blue"></div>
+            </div>
+
+
+
+            <div class="span6">
+                <div id="SnamePreview" class="small-blue"></div>
+            </div>
+        </div>
+        <div class="row-fluid ingress">
+            <div id="DescPreview"></div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-1.9.0.min.js"></script>
+    <script src="~/Scripts/md5.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            var forms = {
+                email: $("#Email"),
+                gravatarEmail: $("#Email"),
+                Firstname: $("#FirstName"),
+                Surname: $("#SurName"),
+                Desc: $("#Description")
+            };
+
+            forms.Firstname.keyup(function () {
+                var me = $(this).val()
+                $('#FnamePreview').text(me);
+            });
+
+            forms.Surname.keyup(function () {
+                var me = $(this).val()
+                $('#SnamePreview').text(me);
+            });
+
+            forms.Desc.keyup(function () {
+                var me = $(this).val()
+                $('#DescPreview').text('"'+me+'"');
+            });
+
+
+
+            forms.email.blur(function () {
+                if ($(".gravatarimage").is(":visible"))
+                    return;
+
+                var me = $(this)
+
+                if (me.val().length > 0) {
+                    setGravatar(me.val());
+                    $(".gravatarimage, .showgravatar").fadeIn();
+                }
+            });
+
+            forms.gravatarEmail.keyup(function () {
+                var me = $(this);
+                setGravatar(me.val());
+                if (me.val().length > 12) {
+                }
+            });
+
+            $(".showgravatar").click(function () {
+                $(this).hide();
+                var gravatar = $("#gravatar");
+                forms.gravatarEmail.val(forms.email.val());
+
+                gravatar.slideDown();
+            });
+
+
+            displayGravatar = function (name) {
+                return "http://www.gravatar.com/avatar/" + hex_md5(name) + "?s=120&d=mm";
+            };
+
+            setGravatar = function (name) {
+                $(".gravatarimage").attr("src", displayGravatar(name));
+            }
+
+        });
+
+    </script>
+}

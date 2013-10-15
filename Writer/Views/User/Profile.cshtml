@@ -1,0 +1,107 @@
+﻿@model Writer.Models.User
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@foreach (var item in Model.Articles)
+{
+    <div class="row-fluid">
+        <div class="span10">
+            <div class="row-fluid storyHeader"><i class="icon-bullhorn icon-white"></i>@item.Title <span style="float: right;">@item.Created.ToShortDateString()</span></div>
+            <div class="row-fluid story">
+                <p>
+                    @item.Text
+                </p>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="row-fluid">
+                <span class="small-blue"><i class="icon-thumbs-up"></i>1,389</span>
+            </div>
+            <div class="row-fluid">
+                <span class="small-blue"><i class="icon-comment"></i>154</span>
+            </div>
+
+            <div class="row-fluid">
+                <span class="small-blue"><i class="icon-share"></i>633</span>
+            </div>
+            <div class="row-fluid">
+                -
+            </div>
+            <div class="row-fluid">
+                <span class="small-blue"><i class="icon-user"></i>11,328</span>
+            </div>
+
+            <div class="row-fluid">
+                <span class="small-blue"><i class="icon-eye-open"></i>46</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row-fluid">
+        <hr />
+    </div>
+}
+
+
+
+@section RightColumn{
+    <div class="row-fluid">
+        <div class="span12 small-blue">Latest comments:</div>
+        @foreach(var c in Model.Comments)
+        {
+            <div class="row-fluid">
+                @c.Text
+            </div>
+        }
+
+    </div>
+}
+
+@section LeftColumn{
+    <div class="row-fluid">
+        <div class="span12">
+            <img src="" class="img-polaroid gravatarimage">
+        </div>
+        <div class="row-fluid">
+            <div style="margin-top: 10px;">
+                @(Model.FirstName + " " + Model.SurName)
+            </div>
+
+        </div>
+    </div>
+
+
+    <input type="hidden" id="mail" value="@Model.Email" />
+
+
+}
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-1.9.0.min.js"></script>
+    <script src="~/Scripts/md5.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            setGravatar($("#mail").val());
+
+            function displayGravatar(mail) {
+                return "http://www.gravatar.com/avatar/" + hex_md5(mail) + "?s=140&d=mm";
+                console.log("hit1");
+            };
+
+            function setGravatar(name) {
+                $(".gravatarimage").attr("src", displayGravatar(name));
+            }
+
+        });
+
+
+    </script>
+
+}
